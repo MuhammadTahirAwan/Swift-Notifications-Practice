@@ -24,6 +24,9 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
         txtBox.returnKeyType = .done
         txtBox.autocorrectionType = .no
         
+        // Starts masked or unmasked depending on My default:
+        txtBox.isSecureTextEntry = false
+        
         return txtBox
     }()
     
@@ -53,9 +56,16 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         setupUI()
         
+        //Subscribing to respond to Keyboard Notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        // Do any additional setup after loading the view.
+        
+        
+        
+        //Subscribing to respond to App State Notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+    
     }
     
     
@@ -91,9 +101,25 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
+    
+    @objc func appDidEnterBackground(notification: Notification) {
+        print("App entered background")
+        
+        textBox.isSecureTextEntry = true
+    }
+    
+    @objc func appDidBecomeActive(notification: Notification) {
+        print("App became active")
+        textBox.isSecureTextEntry = false
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     /*
