@@ -51,7 +51,7 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -65,13 +65,52 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
         //Subscribing to respond to App State Notifications
         NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-    
+        
+        //        ThemeManager.shared.currentTheme = .light
+        
     }
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        //        textField.isUserInteractionEnabled = true
+        
+        
+        
+        if textField == self.textBox{
+            
+            
+            if let txt = textField.text{
+                
+                switch txt {
+                    case "light", "LIGHT", "Light":
+                        ThemeManager.shared.currentTheme = .light
+                        
+                    case "dark", "DARK", "Dark":
+                        ThemeManager.shared.currentTheme = .dark
+                        
+                    case "system", "SYSTEM", "System":
+                        ThemeManager.shared.currentTheme = .system
+                        
+                    default:
+                        print("Unrecognized input: \(txt)")
+                
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
+        }
+        
     }
     
     // Dismiss keyboard when tapping anywhere outside the text field
