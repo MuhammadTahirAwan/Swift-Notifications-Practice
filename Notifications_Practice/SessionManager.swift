@@ -60,7 +60,8 @@ final class SessionManager{
     
     // Explicit logout action
     func logOut() {
-        UserDefaults.standard.set(LoginStatus.loggedOut.rawValue, forKey: sessionKey)
+//        UserDefaults.standard.set(LoginStatus.loggedOut.rawValue, forKey: sessionKey)
+        UserDefaults.standard.removeObject(forKey: sessionKey)
         UserDefaults.standard.removeObject(forKey: emailKey)
         print("User logged out")
     }

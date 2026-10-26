@@ -110,7 +110,7 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func handleSubmit() {
         
-        SessionManager.shared.currentStatus = .loggedOut
+//        SessionManager.shared.currentStatus = .loggedOut
         SessionManager.shared.logOut()
     }
     
