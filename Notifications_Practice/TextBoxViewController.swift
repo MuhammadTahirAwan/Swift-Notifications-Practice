@@ -10,6 +10,38 @@ import UIKit
 class TextBoxViewController: UIViewController, UITextFieldDelegate {
     
     private var centerYAnchorConstraint: NSLayoutConstraint?
+    
+    
+    private lazy var submitBtn: UIButton = {
+        
+        
+        var config = UIButton.Configuration.plain()
+        var titleAttr = AttributeContainer()
+        titleAttr.font = UIFont.systemFont(ofSize: 22, weight: .regular) // Set your desired size and weight
+        config.attributedTitle = AttributedString("Logout", attributes: titleAttr)
+        //config.image = UIImage(systemName: "paperplane.fill")
+        config.imagePlacement = .trailing
+        config.imagePadding = 8
+        config.baseForegroundColor = .white
+        config.cornerStyle = .capsule
+        config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 28, bottom: 14, trailing: 28)
+        
+        // Built-in glass properties on UIBackgroundConfiguration
+        config.background.visualEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        //        config.background.backgroundColor = UIColor.white.withAlphaComponent(0.15)
+        config.background.strokeColor = UIColor.white.withAlphaComponent(0.4)
+        config.background.strokeWidth = 1
+        
+        let submitButton = UIButton(configuration: config)
+        submitButton.translatesAutoresizingMaskIntoConstraints = false
+        submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
+        
+        
+        
+        
+        return submitButton
+    }()
+    
     private lazy var textBox: UITextField = {
         
         let txtBox: UITextField = UITextField()
@@ -47,6 +79,12 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
             
         ])
         
+        view.addSubview(submitBtn)
+        NSLayoutConstraint.activate([
+            submitBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            submitBtn.centerYAnchor.constraint(equalTo: textBox.bottomAnchor, constant: 50)
+        ])
+        
         
     }
     
@@ -68,6 +106,12 @@ class TextBoxViewController: UIViewController, UITextFieldDelegate {
         
         //        ThemeManager.shared.currentTheme = .light
         
+    }
+    
+    @objc private func handleSubmit() {
+        
+        SessionManager.shared.currentStatus = .loggedOut
+        SessionManager.shared.logOut()
     }
     
     

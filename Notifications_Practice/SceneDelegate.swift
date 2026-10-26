@@ -18,6 +18,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
         window?.overrideUserInterfaceStyle = ThemeManager.shared.currentTheme.userInterfaceStyle
+        
+//        if SessionManager.shared.currentStatus == .loggedIn
+//        {
+//            SessionManager.shared.currentStatus
+//        }
+        
+        print(SessionManager.shared.currentStatus)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let initialViewController: UIViewController
+        
+        // 3. Determine root controller based on session state
+        if SessionManager.shared.currentStatus == .loggedIn {
+            guard let homeVC = storyboard.instantiateViewController(withIdentifier: "TextBoxViewController") as? TextBoxViewController else {
+                return
+            }
+            // Embed in UINavigationController if your home flow uses navigation
+            initialViewController = UINavigationController(rootViewController: homeVC)
+        } else {
+            guard let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController else {
+                return
+            }
+            initialViewController = loginVC
+        }
+        
+        // 4. Assign the root view controller and display
+        window?.rootViewController = initialViewController
+        window?.makeKeyAndVisible()
     
         guard let _ = (scene as? UIWindowScene) else { return }
     }
