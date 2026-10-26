@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 3. Determine root controller based on session state
         if SessionManager.shared.currentStatus == .loggedIn {
-            guard let txtBoxVC = storyboard.instantiateViewController(withIdentifier: "TextBoxViewController") as? TextBoxViewController else {
+            guard let txtBoxVC = storyboard.instantiateViewController(withIdentifier: "SearchViewController") as? SearchViewController else {
                 return
             }
             // Embed in UINavigationController if your home flow uses navigation
